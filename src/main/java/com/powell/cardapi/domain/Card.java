@@ -1,34 +1,34 @@
 package com.powell.cardapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class User {
+@Immutable
+public class Card {
 
     @Id
     @Column(name = "ID")
     private String id = UUID.randomUUID().toString();
-    @Column(name = "FIRST_NAME")
-    private String firstName;
-    @Column(name = "SECOND_NAME")
-    private String secondName;
-    @Column(name = "BIRTH_DATE")
-    private LocalDate birthDate;
-    @Column(name = "PREFERRED_CURRENCY")
-    private Currency preferredCurrency;
 
-    @OneToMany
-    private List<Card> cards = new ArrayList<>();
+    @Column(name = "CARD_NUMBER")
+    private String cardNumber;
+    @Column(name = "CVV")
+    private String cvv;
+    @Column(name = "EXPIRY_DATE")
+    private LocalDate expiryDate;
+    @Column(name = "FROZEN")
+    private boolean isFrozen;
 
     // Optimistic lock to prevent dirty writes if two threads/instances try update card at the same time
     @Version
