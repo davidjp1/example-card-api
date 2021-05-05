@@ -1,7 +1,6 @@
 package com.powell.cardapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -29,6 +28,11 @@ public class Card {
     private LocalDate expiryDate;
     @Column(name = "FROZEN")
     private boolean isFrozen;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @JsonIgnore
+    private User user;
 
     // Optimistic lock to prevent dirty writes if two threads/instances try update card at the same time
     @Version

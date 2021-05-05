@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,13 @@ public class CardController {
         return cardService.generateCardForUser(userId);
     }
 
+    @GetMapping("/v1/{id}")
+    public Card getCard(
+            @PathVariable String id
+    ) {
+        return cardService.getCard(id);
+    }
+
     @GetMapping("/v1/{id}/validate")
     public ValidationResponse isCardValid(
         @PathVariable String id
@@ -39,6 +47,10 @@ public class CardController {
     public @ResponseBody byte[] getCardImage(
             @PathVariable String id
     ) {
-        return cardService.getCardImage(id);
+        try {
+            return cardService.getCardImage(id);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to process card to Image", e);
+        }
     }
 }

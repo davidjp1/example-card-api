@@ -27,7 +27,7 @@ public class User {
     @Column(name = "PREFERRED_CURRENCY")
     private Currency preferredCurrency;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Card> cards = new ArrayList<>();
 
     // Optimistic lock to prevent dirty writes if two threads/instances try update card at the same time

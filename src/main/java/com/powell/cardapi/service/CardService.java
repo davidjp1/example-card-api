@@ -16,12 +16,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.powell.cardapi.util.CardNumberGeneration.generateCVV;
 import static com.powell.cardapi.util.CardNumberGeneration.generateCardNumber;
 import static java.time.ZoneOffset.UTC;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.time.temporal.ChronoUnit.YEARS;
 
 @Service
@@ -42,10 +44,8 @@ public class CardService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("User Not Found"));
 
-        user.getCards().add(card);
-        cardRepository.save(card);
-        userRepository.save(user);
-        return card;
+        card.setUser(user);
+        return cardRepository.save(card);
     }
 
     public void addCard(Card c){
@@ -69,23 +69,28 @@ public class CardService {
         return validationErrors;
     }
 
-    public byte[] getCardImage(String id) {
+    public byte[] getCardImage(String id) throws IOException {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Card Not Found"));
 
-        BufferedImage bufferedImage = new BufferedImage(525 , 300, BufferedImage.TYPE_INT_RGB);
+        // x:335, y:217
+        BufferedImage bufferedImage = ImageIO.read(getClass().getClassLoader().getResource("static/CreditCard.jpg"));
         Graphics2D g2d = bufferedImage.createGraphics();
-        g2d.setColor(Color.GREEN);
-        g2d.fillRect(0,0, 1050, 600);
+
         g2d.setColor(Color.BLACK);
-        g2d.drawString(card.getCardNumber(), 100, 100);
+        g2d.drawString(card.getCardNumber().substring(0, 4), 90, 130);
+        g2d.drawString(card.getCardNumber().substring(4, 10), 145, 130);
+        g2d.drawString(card.getCardNumber().substring(10, 15), 210, 130);
+        g2d.drawString(card.getExpiryDate().format(ofPattern("dd-MMM-YYYY")), 160, 170);
+        g2d.drawString(card.getUser().getFirstName(), 50, 190);
+        g2d.drawString(card.getUser().getSecondName(), 90, 190);
         g2d.dispose();
-        try {
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", byteStream);
-            return byteStream.toByteArray();
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to write image to jpg", e);
-        }
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", byteStream);
+        return byteStream.toByteArray();
+    }
+
+    public Card getCard(String id) {
+        return cardRepository.findById(id).orElse(null);
     }
 }
