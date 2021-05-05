@@ -29,7 +29,6 @@ public class UserService {
     }
 
     public User updateUser(String id, UserUpdateRequest request) {
-        // check if exists before saving, JPA save impl will do the update for us.
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("User Not Found"));
         return updateUser(user, request);

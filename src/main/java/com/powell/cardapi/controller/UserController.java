@@ -28,6 +28,7 @@ public class UserController {
     public User getUser(
             @PathVariable String id
     )  {
+        log.info("getting user id={}", id);
         return userService.getUser(id);
     }
 
@@ -36,13 +37,15 @@ public class UserController {
             @PathVariable String id,
             @RequestBody UserUpdateRequest updateRequest
     ) {
+        log.info("updating user id={} update={}", id, updateRequest);
         return userService.updateUser(id, updateRequest);
     }
 
     @PostMapping("/v1")
-    public User addUser(
+    public User registerUser(
             @RequestBody UserUpdateRequest updateRequest
     ) {
+        log.info("adding new user request={}", updateRequest);
         return userService.addUser(updateRequest);
     }
 
@@ -50,6 +53,7 @@ public class UserController {
     public void removeUser(
             @PathVariable String id
     ) {
+        log.warn("removing user id={}", id);
         userService.deleteUser(id);
     }
 }

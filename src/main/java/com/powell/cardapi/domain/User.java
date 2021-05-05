@@ -1,7 +1,9 @@
 package com.powell.cardapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,8 +14,9 @@ import java.util.UUID;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class User {
+public class User extends ModificationTrackingEntity {
 
     @Id
     @Column(name = "ID")
@@ -33,7 +36,6 @@ public class User {
     // Optimistic lock to prevent dirty writes if two threads/instances try update card at the same time
     @Version
     @Column(name = "VERSION")
-    @EqualsAndHashCode.Exclude
     @JsonIgnore
     private Long version = 0L;
 }

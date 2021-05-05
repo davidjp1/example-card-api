@@ -12,9 +12,10 @@ import java.util.UUID;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Immutable
-public class Card {
+public class Card extends ModificationTrackingEntity {
 
     @Id
     @Column(name = "ID")
@@ -37,7 +38,6 @@ public class Card {
     // Optimistic lock to prevent dirty writes if two threads/instances try update card at the same time
     @Version
     @Column(name = "VERSION")
-    @EqualsAndHashCode.Exclude
     @JsonIgnore
     private Long version = 0L;
 }
