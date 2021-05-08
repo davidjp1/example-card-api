@@ -3,6 +3,7 @@ package com.powell.cardapi.controller;
 import com.powell.cardapi.domain.Card;
 import com.powell.cardapi.domain.ValidationResponse;
 import com.powell.cardapi.service.CardService;
+import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class CardController {
     private CardService cardService;
 
     @GetMapping("/v1/{id}")
+    @ApiOperation("Get Card details")
     public Card getCard(
             @PathVariable String id
     ) {
@@ -29,6 +31,7 @@ public class CardController {
     }
 
     @PutMapping("/v1/{id}/freeze")
+    @ApiOperation("Freeze or Unfreeze a Card")
     public void freezeCard(
             @PathVariable String id,
             @RequestParam boolean frozen
@@ -38,6 +41,7 @@ public class CardController {
     }
 
     @GetMapping("/v1/generate/{userId}")
+    @ApiOperation("Request a new card for a given user ID")
     public Card requestCard(
             @PathVariable String userId
     ) {
@@ -46,6 +50,7 @@ public class CardController {
     }
 
     @GetMapping("/v1/{id}/validate")
+    @ApiOperation("Check whether a card is valid for a given card ID, returns result and errors if they exist")
     public ValidationResponse isCardValid(
             @PathVariable String id
     ) {
@@ -54,7 +59,8 @@ public class CardController {
         return new ValidationResponse(validationErrors.isEmpty(), validationErrors);
     }
 
-    @GetMapping(value ="v1/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "v1/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
+    @ApiOperation("Return a PNG image representation of the Card")
     public @ResponseBody byte[] getCardImage(
             @PathVariable String id
     ) {

@@ -3,6 +3,7 @@ package com.powell.cardapi.controller;
 import com.powell.cardapi.domain.User;
 import com.powell.cardapi.domain.UserUpdateRequest;
 import com.powell.cardapi.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +21,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/v1")
+    @ApiOperation("Get a list of all User IDs")
     public List<String> getUserIds() {
         return userService.getUsers();
     }
 
     @GetMapping("/v1/{id}")
+    @ApiOperation("Get User details")
     public User getUser(
             @PathVariable String id
     )  {
@@ -33,6 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/v1/{id}")
+    @ApiOperation("Update a User")
     public User updateUser(
             @PathVariable String id,
             @RequestBody UserUpdateRequest updateRequest
@@ -42,6 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/v1")
+    @ApiOperation("Register a new User")
     public User registerUser(
             @RequestBody UserUpdateRequest updateRequest
     ) {
@@ -50,6 +55,7 @@ public class UserController {
     }
 
     @DeleteMapping("/v1/{id}")
+    @ApiOperation("Remove a User")
     public void removeUser(
             @PathVariable String id
     ) {
