@@ -20,14 +20,6 @@ public class CardController {
     @NonNull
     private CardService cardService;
 
-    @PostMapping("/v1")
-    public Card requestCard(
-            @RequestBody String userId
-            ) {
-        log.info("received request for new card for user={}", userId);
-        return cardService.generateCardForUser(userId);
-    }
-
     @GetMapping("/v1/{id}")
     public Card getCard(
             @PathVariable String id
@@ -36,13 +28,21 @@ public class CardController {
         return cardService.getCard(id);
     }
 
-    @PutMapping("/v1/{id}/frozen")
-    public Card freezeCard(
+    @PutMapping("/v1/{id}/freeze")
+    public void freezeCard(
             @PathVariable String id,
             @RequestParam boolean frozen
     ) {
         log.info("updating card freeze/unfreeze id={} frozen={}", id, frozen);
-        return cardService.updateCardFrozen(id, frozen);
+        cardService.updateCardFrozen(id, frozen);
+    }
+
+    @GetMapping("/v1/generate/{userId}")
+    public Card requestCard(
+            @PathVariable String userId
+    ) {
+        log.info("received request for new card for user={}", userId);
+        return cardService.generateCardForUser(userId);
     }
 
     @GetMapping("/v1/{id}/validate")

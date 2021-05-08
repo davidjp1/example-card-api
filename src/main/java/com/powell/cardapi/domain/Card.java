@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static com.powell.cardapi.util.RandomUtils.randomUUID;
+
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +21,7 @@ public class Card extends ModificationTrackingEntity {
 
     @Id
     @Column(name = "ID")
-    private String id = UUID.randomUUID().toString();
+    private String id = randomUUID();
 
     @Column(name = "CARD_NUMBER")
     private String cardNumber;

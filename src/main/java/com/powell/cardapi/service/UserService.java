@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -19,23 +18,24 @@ public class UserService {
     @NonNull
     private UserRepository userRepository;
 
-    public List<String> getUsers(){
-        return newArrayList(userRepository.findAll()).stream()
+    public List<String> getUsers() {
+        return userRepository.findAll().stream()
                 .map(User::getId)
                 .collect(toList());
     }
+
     public User getUser(String id){
         return userRepository.findById(id).orElse(null);
+    }
+
+    public User addUser(UserUpdateRequest request) {
+        return updateUser(new User(), request);
     }
 
     public User updateUser(String id, UserUpdateRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("User Not Found"));
         return updateUser(user, request);
-    }
-
-    public User addUser(UserUpdateRequest request) {
-        return updateUser(new User(), request);
     }
 
     private User updateUser(User user, UserUpdateRequest request){

@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.UUID;
+
+import static com.powell.cardapi.util.RandomUtils.randomUUID;
 
 @Entity
 @Data
@@ -20,7 +21,7 @@ public class User extends ModificationTrackingEntity {
 
     @Id
     @Column(name = "ID")
-    private String id = UUID.randomUUID().toString();
+    private String id = randomUUID();
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Column(name = "SECOND_NAME")
