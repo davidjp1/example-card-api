@@ -1,4 +1,4 @@
-# example-card-api
+# Example Card API
 > Demo Spring Boot Rest API, showing how to use some useful Spring features.
 
 ## Included features
